@@ -1,70 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nym Mix Fetch Endpoints</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f7f8fa;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-        }
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f7f8fa;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+      }
 
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-        }
+      h1, h3, h6 {
+        color: #333;
+        margin-bottom: 20px;
+      }
 
-        #urlInput {
-            padding: 10px;
-            width: 300px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
-        }
+      #urlInput {
+        padding: 10px;
+        width: 300px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+      }
 
-        #fetchButton {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-transform: uppercase;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+      #fetchButton {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-transform: uppercase;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
 
-        #fetchButton:hover {
-            background-color: #0056b3;
-        }
+      #fetchButton:hover {
+        background-color: #0056b3;
+      }
 
-        #result {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 5px;
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 500px;
-            overflow: auto;
-            white-space: pre-wrap;
-            font-family: monospace;
-        }
+      #result {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        width: 80%;
+        max-width: 500px;
+        overflow: auto;
+        white-space: pre-wrap;
+        font-family: monospace;
+      }
+
+      #advancedOptionsContainer .input-group {
+        margin-bottom: 15px;
+      }
+
+      #advancedOptionsContainer .input-field {
+        width: 100%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      #advancedOptionsContainer .toggle-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+      }
+
+      #advancedOptionsContainer .toggle-item {
+        display: flex;
+        align-items: center;
+      }
+
+      #advancedOptionsContainer .toggle {
+        margin-right: 10px;
+      }
+
+      #advancedOptionsContainer .toggle-label {
+        cursor: pointer;
+        margin-left: 10px;
+      }
+
+      #advancedOptionsContainer .toggle-container.single {
+        justify-content: flex-start;
+      }
+      #advancedOptionsContainer .toggle-container.single {
+        margin-bottom: 15px;
+      }
+
+      #advancedOptionsContainer .toggle-label {
+        margin-left: 10px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>MixFetch any JSON Endpoint</h1>
+    <h2>🚨🚨 Disclaimer 🚨🚨 </h2>
+    <h3> if you want to change your config mid flight..<br>you're going to have to restart the node process</h3>
     <input type="text" id="urlInput" placeholder="Enter URL to fetch" />
-    <button id="fetchButton">Mixfetch Data Through Nym</button>
+    <button id="fetchButton">Fetch Data Through Nym</button>
+    <br />
+    <!-- <br/>
+    <button id="refreshConnectionButton">Refresh Connection</button>
+    <br/> -->
+    <div id="advancedOptionsContainer">
+      <div class="toggle-container">
+        <div class="toggle-item">
+          <input
+            type="checkbox"
+            id="overrideConfigToggle"
+            class="toggle"
+            onclick="toggleAdvancedOptions();"
+          />
+          <label for="overrideConfigToggle" class="toggle-label"
+            >Default Config</label
+          >
+        </div>
+        <div class="toggle-item">
+          <input type="checkbox" id="keepConfigToggle" class="toggle" />
+          <label for="keepConfigToggle" class="toggle-label">Keep Config</label>
+        </div>
+      </div>
+
+
+
+      <div id="advancedOptions" style="display: none">
+        <div class="input-group">
+          <label for="apiUrl">API URL:</label>
+          <input type="text" id="apiUrl" class="input-field" />
+        </div>
+        <div class="input-group">
+          <label for="preferredGateway">Preferred Gateway:</label>
+          <input type="text" id="preferredGateway" class="input-field" />
+        </div>
+        <div class="input-group">
+          <label for="preferredNetworkRequester"
+            >Preferred Network Requester:</label
+          >
+          <input
+            type="text"
+            id="preferredNetworkRequester"
+            class="input-field"
+          />
+        </div>
+        <div class="toggle-container single">
+          <input type="checkbox" id="forceTls" class="toggle" />
+          <label for="forceTls" class="toggle-label">Enforce TLS</label>
+        </div>
+
+        <h3>Extra Options</h3>
+        <div class="input-group">
+          <label for="extraOwner">Owner:</label>
+          <input type="text" id="extraOwner" class="input-field" />
+        </div>
+        <div class="input-group">
+          <label for="extraHost">Host:</label>
+          <input type="text" id="extraHost" class="input-field" />
+        </div>
+        <div class="input-group">
+          <label for="extraIp">Explicit IP:</label>
+          <input type="text" id="extraIp" class="input-field" />
+        </div>
+        <div class="input-group">
+          <label for="extraIdentityKey">Identity Key:</label>
+          <input type="text" id="extraIdentityKey" class="input-field" />
+        </div>
+        <div class="input-group">
+          <label for="extraSphinxKey">Sphinx Key:</label>
+          <input type="text" id="extraSphinxKey" class="input-field" />
+        </div>
+      </div>
+    </div>
+
     <div id="result"></div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
