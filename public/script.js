@@ -5,22 +5,21 @@ document.addEventListener("DOMContentLoaded", function () {
   const urlInput = document.getElementById("urlInput");
   const maxRetries = 3;
 
-  function toggleAdvancedOptions() {
-    if (overrideConfigToggle.checked) {
-      advancedOptions.style.display = "block";
-    } else {
-      advancedOptions.style.display = "none";
-    }
-  }
-
   toggleAdvancedOptions();
   overrideConfigToggle.addEventListener("change", toggleAdvancedOptions);
 
   document
     .getElementById("fetchButton")
     .addEventListener("click", async function () {
-      await fetchData(0); 
+      await fetchData(0);
     });
+
+  // not working....
+  // document
+  //   .getElementById("refreshConnectionButton")
+  //   .addEventListener("click", function () {
+  //     refreshMixFetch();
+  //   });
 
   async function fetchData(retryCount) {
     const fetchButton = document.getElementById("fetchButton");
@@ -32,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const overrideConfig = overrideConfigToggle.checked;
 
     if (!url) {
-      resultDiv.textContent = "please enter a URL.";
+      resultDiv.textContent = "Please enter a URL.";
       fetchButton.disabled = false;
       return;
     }
@@ -79,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
         requestOptions
       );
       if (!response.ok) {
-        throw new Error("lol not good sir");
+        throw new Error("Network response was not OK.");
       }
       const data = await response.json();
       resultDiv.textContent = JSON.stringify(data, null, 2);
@@ -90,10 +89,10 @@ document.addEventListener("DOMContentLoaded", function () {
         retryCount < maxRetries &&
         error.message.includes("mix fetch hasn't been initialised")
       ) {
-        console.log(`retrying request (${retryCount + 1}/${maxRetries})...`);
+        console.log(`Retrying request (${retryCount + 1}/${maxRetries})...`);
         await fetchData(retryCount + 1);
       } else {
-        resultDiv.textContent = "error: " + error.message;
+        resultDiv.textContent = "Error: " + error.message;
       }
     } finally {
       fetchButton.disabled = false;
@@ -116,4 +115,32 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("extraSphinxKey").value = "";
     }
   }
+
+  function toggleAdvancedOptions() {
+    if (overrideConfigToggle.checked) {
+      advancedOptions.style.display = "block";
+    } else {
+      advancedOptions.style.display = "none";
+    }
+  }
 });
+
+// the refresh action unfortunately is not working due to the singleton implementation 
+// if you want to add a new configuration restart the application
+
+// async function refreshMixFetch() {
+//   try {
+//     const response = await fetch("/refresh-mixfetch");
+//     const data = await response.json();
+//     if (data.refresh && window.__mixFetchGlobal) {
+//       await window.__mixFetchGlobal.disconnectMixFetch();
+//       window.__mixFetchGlobal = undefined;
+//       // Recreate mixFetch
+//       window.__mixFetchGlobal = await createMixFetchInternal();
+//       // Setup mixFetch again with options if needed
+//       // await window.__mixFetchGlobal.setupMixFetch(opts);
+//     }
+//   } catch (error) {
+//     console.error("Error refreshing mixFetch:", error);
+//   }
+// }

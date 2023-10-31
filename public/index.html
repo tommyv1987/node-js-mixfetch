@@ -17,7 +17,7 @@
         margin: 0;
       }
 
-      h1 {
+      h1, h3, h6 {
         color: #333;
         margin-bottom: 20px;
       }
@@ -103,10 +103,14 @@
   </head>
   <body>
     <h1>MixFetch any JSON Endpoint</h1>
+    <h2>🚨🚨 Disclaimer 🚨🚨 </h2>
+    <h3> if you want to change your config mid flight..<br>you're going to have to restart the node process</h3>
     <input type="text" id="urlInput" placeholder="Enter URL to fetch" />
     <button id="fetchButton">Fetch Data Through Nym</button>
     <br />
-
+    <!-- <br/>
+    <button id="refreshConnectionButton">Refresh Connection</button>
+    <br/> -->
     <div id="advancedOptionsContainer">
       <div class="toggle-container">
         <div class="toggle-item">
@@ -117,7 +121,7 @@
             onclick="toggleAdvancedOptions();"
           />
           <label for="overrideConfigToggle" class="toggle-label"
-            >Override Default Config</label
+            >Default Config</label
           >
         </div>
         <div class="toggle-item">
@@ -125,6 +129,8 @@
           <label for="keepConfigToggle" class="toggle-label">Keep Config</label>
         </div>
       </div>
+
+
 
       <div id="advancedOptions" style="display: none">
         <div class="input-group">

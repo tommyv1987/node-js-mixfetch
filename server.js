@@ -19,20 +19,27 @@ app.get("/nym-fetch", async (req, res) => {
     const url = req.query.url;
 
     let mixFetchOptions = {};
+
+
     if (req.headers["override-config"]) {
-      if (isMixFetchActive) {
-        try {
-          console.log("disconnecting current mix fetch session!");
-          await disconnectMixFetch();
-          const sleepDuration = Math.random() * 5000 + 5000;
-          await sleep(sleepDuration);
-          isMixFetchActive = false;
-        } catch (disconnectError) {
-          console.error("error during disconnectMixFetch:", disconnectError);
-        }
-      }
+      // unfortunately this is not achievable at present..
+      // thus changing your configuration on the fly is not achievable..
+      // 
+      // if (isMixFetchActive) {
+      //   try {
+      //     console.log("disconnecting current mix fetch session!");
+      //     await disconnectMixFetch();
+      //     const sleepDuration = Math.random() * 5000 + 5000;
+      //     await sleep(sleepDuration);
+      //     // sleep for the sake of it 
+      //     // isMixFetchActive = false;
+      //   } catch (disconnectError) {
+      //     console.error("error during disconnectMixFetch:", disconnectError);
+      //   }
+      // }
 
       const overrideConfig = JSON.parse(req.headers["override-config"]);
+      
       mixFetchOptions = {
         nymApiUrl: overrideConfig.apiUrl,
         preferredGateway: overrideConfig.preferredGateway,
@@ -63,5 +70,19 @@ app.get("/nym-fetch", async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+// not working here...
+// app.get("/refresh-mixfetch", async (req, res) => {
+//   try {
+//     if (isMixFetchActive) {
+//       await disconnectMixFetch();
+//       isMixFetchActive = false;
+//     }
+//     res.json({ refresh: true });
+//   } catch (error) {
+//     console.error("Error during mixFetch refresh:", error);
+//     res.status(500).json({ refresh: false, message: error.message });
+//   }
+// });
 
 app.listen(3000, () => console.log("Server running on port 3000"));
