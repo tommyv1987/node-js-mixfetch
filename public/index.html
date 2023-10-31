@@ -92,6 +92,13 @@
       #advancedOptionsContainer .toggle-container.single {
         justify-content: flex-start;
       }
+      #advancedOptionsContainer .toggle-container.single {
+        margin-bottom: 15px;
+      }
+
+      #advancedOptionsContainer .toggle-label {
+        margin-left: 10px;
+      }
     </style>
   </head>
   <body>
@@ -103,7 +110,12 @@
     <div id="advancedOptionsContainer">
       <div class="toggle-container">
         <div class="toggle-item">
-          <input type="checkbox" id="overrideConfigToggle" class="toggle" />
+          <input
+            type="checkbox"
+            id="overrideConfigToggle"
+            class="toggle"
+            onclick="toggleAdvancedOptions();"
+          />
           <label for="overrideConfigToggle" class="toggle-label"
             >Override Default Config</label
           >
@@ -114,52 +126,51 @@
         </div>
       </div>
 
-      <div class="input-group">
-        <label for="apiUrl">API URL:</label>
-        <input type="text" id="apiUrl" class="input-field" />
-      </div>
+      <div id="advancedOptions" style="display: none">
+        <div class="input-group">
+          <label for="apiUrl">API URL:</label>
+          <input type="text" id="apiUrl" class="input-field" />
+        </div>
+        <div class="input-group">
+          <label for="preferredGateway">Preferred Gateway:</label>
+          <input type="text" id="preferredGateway" class="input-field" />
+        </div>
+        <div class="input-group">
+          <label for="preferredNetworkRequester"
+            >Preferred Network Requester:</label
+          >
+          <input
+            type="text"
+            id="preferredNetworkRequester"
+            class="input-field"
+          />
+        </div>
+        <div class="toggle-container single">
+          <input type="checkbox" id="forceTls" class="toggle" />
+          <label for="forceTls" class="toggle-label">Enforce TLS</label>
+        </div>
 
-      <div class="input-group">
-        <label for="preferredGateway">Preferred Gateway:</label>
-        <input type="text" id="preferredGateway" class="input-field" />
-      </div>
-
-      <div class="input-group">
-        <label for="preferredNetworkRequester"
-          >Preferred Network Requester:</label
-        >
-        <input type="text" id="preferredNetworkRequester" class="input-field" />
-      </div>
-
-      <div class="toggle-container single">
-        <input type="checkbox" id="forceTls" class="toggle" />
-        <label for="forceTls" class="toggle-label">Enforce TLS</label>
-      </div>
-
-      <h3>Extra Options</h3>
-      <div class="input-group">
-        <label for="extraOwner">Owner:</label>
-        <input type="text" id="extraOwner" class="input-field" />
-      </div>
-
-      <div class="input-group">
-        <label for="extraHost">Host:</label>
-        <input type="text" id="extraHost" class="input-field" />
-      </div>
-
-      <div class="input-group">
-        <label for="extraIp">Explicit IP:</label>
-        <input type="text" id="extraIp" class="input-field" />
-      </div>
-
-      <div class="input-group">
-        <label for="extraIdentityKey">Identity Key:</label>
-        <input type="text" id="extraIdentityKey" class="input-field" />
-      </div>
-
-      <div class="input-group">
-        <label for="extraSphinxKey">Sphinx Key:</label>
-        <input type="text" id="extraSphinxKey" class="input-field" />
+        <h3>Extra Options</h3>
+        <div class="input-group">
+          <label for="extraOwner">Owner:</label>
+          <input type="text" id="extraOwner" class="input-field" />
+        </div>
+        <div class="input-group">
+          <label for="extraHost">Host:</label>
+          <input type="text" id="extraHost" class="input-field" />
+        </div>
+        <div class="input-group">
+          <label for="extraIp">Explicit IP:</label>
+          <input type="text" id="extraIp" class="input-field" />
+        </div>
+        <div class="input-group">
+          <label for="extraIdentityKey">Identity Key:</label>
+          <input type="text" id="extraIdentityKey" class="input-field" />
+        </div>
+        <div class="input-group">
+          <label for="extraSphinxKey">Sphinx Key:</label>
+          <input type="text" id="extraSphinxKey" class="input-field" />
+        </div>
       </div>
     </div>
 
